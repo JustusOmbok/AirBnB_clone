@@ -1,22 +1,6 @@
 
 
 0x00. AirBnB clone - The console
-Group projectPythonOOP
-
-    By: Guillaume
-    Weight: 5
-    Project to be done in teams of 2 people (your team: Justus Ombok, Yassin Kazibwe)
-    Project will start Aug 7, 2023 6:00 AM, must end by Aug 14, 2023 6:00 AM
-    Checker will be released at Aug 12, 2023 12:00 PM
-    Manual QA review must be done (request it when you are done with the project)
-    An auto review will be launched at the deadline
-
-Concepts
-
-For this project, we expect you to look at these concepts:
-
-    Python packages
-    AirBnB clone
 
 Background Context
 Welcome to the AirBnB clone project!
@@ -878,11 +862,3 @@ Repo:
 
     GitHub repository: AirBnB_clone
     File: tests/test_console.py
-
-Ready for manual review
-
-Now that you are ready to be reviewed, share your link to your peers. You can find some here.
-https://intranet.alxswe.com/corrections/18808925/correct
-
-Don't forget to review one of them once you've been reviewed. Reviews are due by Aug 21, 2023 6:00 AM
-Copyright © 2023 ALX, All rights reserved.

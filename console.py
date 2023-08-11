@@ -4,6 +4,11 @@ import cmd
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
@@ -29,12 +34,12 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        try:
-            new_instance = eval(arg + "()")
-            new_instance.save()
-            print(new_instance.id)
-        except:
+        if arg not in globals():
             print("** class doesn't exist **")
+            return
+        obj = globals()[arg]()
+        obj.save()
+        print(obj.id)
 
     def do_show(self, arg):
         """ The string representation of an instance is printed """
@@ -42,14 +47,13 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        if args[0] not in storage.classes:
+        if args[0] not in globals():
             print("** class doesn't exist **")
             return
         if len(args) < 2:
             print("** instance id missing **")
             return
-
-        key = args[0] + "." + args[1]
+        key = "{}.{}".format(args[0], args[1])
         if key in storage.all():
             print(storage.all()[key])
         else:
@@ -61,16 +65,16 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        if args[0] not in storage.classes:
+        if args[0] not in globals():
             print("** class doesn't exist **")
             return
         if len(args) < 2:
             print("** instance id missing **")
             return
 
-        key = args[0] + "." + args[1]
+        key = "{}.{}".format(args[0], args[1])
         if key in storage.all():
-            storage.all().pop(key)
+            del storage.all()[key]
             storage.save()
         else:
             print("** no instance found **")
@@ -78,15 +82,13 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, arg):
         """ All string representations of instances is printed """
         args = arg.split()
-        if args and args[0] not in storage.classes:
+        if not args:
+            print([str(obj) for obj in storage.all().values()])
+        elif args[0] in globals():
+            print([str(obj) for key, obj in globals()[args[0]].all().item()])
+        else:
             print("** class doesn't exist **")
-            return
 
-        odj_list = []
-        for key, obj in storage.all().items():
-            if not args or key.split(".")[0] == args[0]:
-                obj_list.append(str(obj))
-            print(obj_list)
 
     def do_update(self, arg):
         """ Updates an instance based on class name and id by adding or updating attribute:(saves changes to JSON file) """
@@ -94,27 +96,62 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        if args[0] not in storage.classes:
+        if args[0] not in globals():
             print("** class doesn't exist **")
             return
         if len(args) < 2:
             print("** instance id missing **")
             return
 
-        key = args[0] + "." + args[1]
-        if key in storage.all():
-            if len(args) < 3:
-                print("** attribute name missing **")
-            elif len(args) < 4:
-                print("** value missing **")
-            else:
-                instance = storage.all()[key]
-                attr_name = args[2]
-                attr_value = args[3].strip('"')
-                setattr(instance, attr_name, attr_value)
-                instance.save()
-        else:
+        key = "{}.{}".format(args[0], args[1])
+        if key not in storage.all():
             print("** no instance found **")
+            return
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return
+        if len(args) < 4:
+            print("** value missing **")
+            return
+
+        try:
+            update_dict = eval('{' + ' '.join(args[3:]) + '}')
+        except:
+            print("** invalid dictionary format **")
+            return
+
+        for k, v in update_dict.items():
+            setattr(storage.all()[key], k, v)
+        storage.all()[key].save()
+
+    def do_count(self, arg):
+        """ Counts number of instances of a class """
+        args = arg.split()
+        if not args:
+            print("** class name missing **")
+            return
+        if args[0] in globals():
+            count = len(globals()[args[0]].all())
+            print(count)
+        else:
+            print("** class doesn't exist **")
+
+
+    def default(self, line):
+        """ Handles new ways of inputing data """
+        args = line.split('.')
+        if len(args) > 1 and args[0] in globals() and args[1] == "show":
+            cls_name = args[0]
+            if len(args) < 3:
+                print("** instance id missing **")
+                return
+            key = "{}.{}".format(cls_name, args[2])
+            if key in storage.all():
+                print(storage.all[key])
+            else:
+                print("** no instance found **")
+        else:
+            print("*** Unknown syntax: {}".format(line))
 
 
 if __name__ == '__main__':

@@ -28,7 +28,7 @@ class HBNBCommand(cmd.Cmd):
         print("")
         return True
 
-    def do_crete(self, arg):
+    def do_create(self, arg):
         """ Creates a new instance of BaseModel, saves it in the JSON file """
         if not arg:
             print("** class name missing **")

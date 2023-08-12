@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """ Airbnb clone interpreter """
 import cmd
+import ast
+from datetime import datetime as dt
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -9,6 +11,14 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+
+classes = {"BaseModel": BaseModel,
+        "Amenity": Amenity,
+        "City": City,
+        "Place": Place,
+        "Review": Review,
+        "State": State,
+        "User": User}
 
 
 class HBNBCommand(cmd.Cmd):
@@ -82,12 +92,16 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, arg):
         """ All string representations of instances is printed """
         args = arg.split()
-        if not args:
-            print([str(obj) for obj in storage.all().values()])
-        elif args[0] in globals():
-            print([str(obj) for obj in globals()[args[0]].all().values()])
-        else:
+        objt = storage.all()
+        if args and args[0] not in classes.keys():
             print("** class doesn't exist **")
+        else:
+            for key in objt.keys():
+                if args:
+                    if args[0] == key.split(".")[0]:
+                        print(objt[key])
+                else:
+                    print(objt[key])
 
 
     def do_update(self, arg):
@@ -126,15 +140,12 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, arg):
         """ Counts number of instances of a class """
-        args = arg.split()
-        if not args:
-            print("** class name missing **")
-            return
-        if args[0] in globals():
-            count = len(globals()[args[0]].all())
-            print(count)
-        else:
-            print("** class doesn't exist **")
+        counting = 0
+        counter_dict = storage.all()
+        for key in counter_dict:
+            if (arg in key):
+                counting += 1
+        print(counting)
 
 
     def default(self, line):

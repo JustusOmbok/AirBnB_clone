@@ -15,7 +15,7 @@ class TestFileStorage(unittest.TestCase):
             self.assertIsNotNone(re)
 
     def test_file(self):
-        """test"""
+        """test file"""
         with open("file.json") as f:
             re = f.read()
             self.assertIn("BaseModel", re)

@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-from models.base_model import Basemodel
+from models.base_model import BaseModel
 
 """This is the Review modules"""
 
 
-class Review(Basemodel):
+class Review(BaseModel):
     """
     This is the review class
     """

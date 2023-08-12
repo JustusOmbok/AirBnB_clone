@@ -32,22 +32,12 @@ class BaseModel:
         Updates the updated_at attribute and saves the instance.
         """
         self.updated_at = datetime.now()
-<<<<<<< HEAD
-=======
-        dic = self.to_dict()
-        storage.save()
-
-    def all(cls):
-        """ Returns a dictionary of all instances """
-        return models.storage.all(cls)
->>>>>>> edadf621f89780e2f193b394cba7879f78c5b3eb
     
     def to_dict(self):
         """
         Converts the instance to a dictionary representation.
         """
         return {
-<<<<<<< HEAD
             'id': self.id,
             'created_at': self.created_at.isoformat(),
             'updated_at': self.updated_at.isoformat(),
@@ -69,10 +59,3 @@ if __name__ == "__main__":
     print("JSON of my_model:")
     for key in my_model_json.keys():
         print("\t{}: ({}) - {}".format(key, type(my_model_json[key]), my_model_json[key]))
-=======
-            'id' : self.id,
-            'created_at' : self.created_at.isoformat(),
-            'updated_at' : self.updated_at.isoformat(),
-            '__class__' : type(self).__name__
-        }
->>>>>>> edadf621f89780e2f193b394cba7879f78c5b3eb

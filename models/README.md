@@ -1,0 +1,1 @@
+This models includes implementations for basic functional methods upon which the airbnb console is built.

@@ -1,10 +1,10 @@
 #/usr/bin/python3
-from models.base_model import Basemodel
+from models.base_model import BaseModel
 """
 city module
 """
 
-class City(Basemodel):
+class City(BaseModel):
     """
     state class
     """

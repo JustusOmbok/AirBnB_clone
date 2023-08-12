@@ -13,4 +13,8 @@ class User(BaseModel):
     password = ''
     first_name = ''
     last_name = ''
+
+    def count(cls):
+        """ Returns number of instances """
+        return len(models.storage.all(cls))
     

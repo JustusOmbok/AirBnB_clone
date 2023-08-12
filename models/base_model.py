@@ -39,6 +39,10 @@ class BaseModel:
         self.updated_at = datetime.now()
         dic = self.to_dict()
         storage.save()
+
+    def all(cls):
+        """ Returns a dictionary of all instances """
+        return models.storage.all(cls)
     
     def to_dict(self):
         """

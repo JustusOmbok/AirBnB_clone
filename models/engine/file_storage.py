@@ -35,7 +35,7 @@ class FileStorage:
             json.dump(temporary_dic, f)
     def reload(self):
         """
-        Deserializes all objects from the JSON File
+        Deserializes all objects from the JSON File to __objects(if the file exists
         """
         from models.base_model import BaseModel
         from models.user import User
@@ -45,11 +45,13 @@ class FileStorage:
         from models.amenity import Amenity
         from models.review import Review
 
-        if os.path.exists(self.__file_path):
+        try:
             with open(self.__file_path, "r") as f:
-                data = json.load(f)
-            for key, value in data.items():
-                class_name, obj_id = key.split(".")
-                class_ = eval(class_name)
-                obj = class_(**value)
-                self.__objects[key] = obj
+                    data = json.load(f)
+                    for key, value in data.items():
+                        class_name, obj_id = key.split(",")
+                        class_ = eval(class_name)
+                        obj = class_(**value)
+                        self.__objects[key] = obj
+        except FileNotFoundError:
+            pass

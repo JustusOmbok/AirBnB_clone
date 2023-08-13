@@ -30,8 +30,8 @@ class FileStorage:
         """
         This serializes and  saves   objects in the dictionary to JSON file
         """
-        temporary_dic = {f: s.to_dict() for f, s in self.__objects.items()}
-        with open(self.__file_path, "w+") as f:
+        temporary_dic = {f: s.to_dict() for f, s in type(self).__object.items()}
+        with open(type(self).__file_path, "w+") as f:
             json.dump(temporary_dic, f)
     def reload(self):
         """

@@ -7,7 +7,7 @@ class FileStorage:
     """
     This customer class for file storage
     """
-    __file_path = 'file.json'
+    __file_path = "./file.json"
     __objects = {}
 
     def __init__(self) -> None:

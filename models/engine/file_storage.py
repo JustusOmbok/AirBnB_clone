@@ -30,12 +30,12 @@ class FileStorage:
         """
         This serializes and  saves   objects in the dictionary to JSON file
         """
-        temporary_dic = {f: s.to_dict() for f, s in self.__objects.items()}
-        with open(self.__file_path, "w+") as f:
+        temporary_dic = {f: s.to_dict() for f, s in type(self).__object.items()}
+        with open(type(self).__file_path, "w+") as f:
             json.dump(temporary_dic, f)
     def reload(self):
         """
-        Deserializes all objects from the JSON File to __objects(if the file exists
+        Deserializes all objects from the JSON File
         """
         from models.base_model import BaseModel
         from models.user import User
@@ -45,13 +45,11 @@ class FileStorage:
         from models.amenity import Amenity
         from models.review import Review
 
-        try:
+        if os.path.exists(self.__file_path):
             with open(self.__file_path, "r") as f:
-                    data = json.load(f)
-                    for key, value in data.items():
-                        class_name, obj_id = key.split(",")
-                        class_ = eval(class_name)
-                        obj = class_(**value)
-                        self.__objects[key] = obj
-        except FileNotFoundError:
-            pass
+                data = json.load(f)
+            for key, value in data.items():
+                class_name, obj_id = key.split(".")
+                class_ = eval(class_name)
+                obj = class_(**value)
+                self.__objects[key] = obj

@@ -3,7 +3,7 @@
 import cmd
 import ast
 from datetime import datetime as dt
-from models import storage
+from models.__init__ import storage
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -101,12 +101,14 @@ class HBNBCommand(cmd.Cmd):
         if args and args[0] not in classes.keys():
             print("** class doesn't exist **")
         else:
+            result = []
             for key in objt.keys():
                 if args:
                     if args[0] == key.split(".")[0]:
-                        print(objt[key])
+                        result.append(str(objt[key]))
                 else:
-                    print(objt[key])
+                    result.append(str(objt[key]))
+            print(result)
 
 
     def do_update(self, arg):

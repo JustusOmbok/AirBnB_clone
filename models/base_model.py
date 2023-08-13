@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from datetime import datetime
 import uuid
+from models import storage
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
@@ -20,6 +21,11 @@ class BaseModel:
             self.updated_at = self.created_at
         else:
             self.updated_at = datetime.strptime(kwargs["updated_at"], '%Y-%m-%dT%H:%M:%S.%f')
+        if "my_number" in kwargs:
+            self.my_number = kwargs["my_number"]
+
+        if "name" in kwargs:
+            self.name = kwargs["name"]
         
     def __str__(self):
         """
@@ -32,21 +38,32 @@ class BaseModel:
         Updates the updated_at attribute and saves the instance.
         """
         self.updated_at = datetime.now()
+        dic = self.to_dict()
+        storage.save()
+
+    def all(cls):
+        """ Returns a dictionary of all instances """
+        return models.storage.all(cls)
     
     def to_dict(self):
         """
         Converts the instance to a dictionary representation.
         """
-        return {
+        dictionary = {
             'id': self.id,
             'created_at': self.created_at.isoformat(),
             'updated_at': self.updated_at.isoformat(),
             '__class__': type(self).__name__
         }
+        if hasattr(self, 'my_number'):
+            dictionary['my_number'] = self.my_number
+        if hasattr(self, 'name'):
+            dictionary['name'] = self.name
+        return dictionary
 
 if __name__ == "__main__":
     my_model = BaseModel()
-    my_model.name = "My First Model"
+    my_modiel.name = "My First Model"
     my_model.my_number = 89
     print(my_model)
     
@@ -59,3 +76,8 @@ if __name__ == "__main__":
     print("JSON of my_model:")
     for key in my_model_json.keys():
         print("\t{}: ({}) - {}".format(key, type(my_model_json[key]), my_model_json[key]))
+       #'id' : self.id,
+        #'created_at' : self.created_at.isoformat(),
+        #'updated_at' : self.updated_at.isoformat(),
+        #'__class__' : type(self).__name__
+        #}

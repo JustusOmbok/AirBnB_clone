@@ -7,17 +7,20 @@ class FileStorage:
     """
     This customer class for file storage
     """
-    __file_path = "./file.json"
+    __file_path = 'file.json'
     __objects = {}
 
     def __init__(self) -> None:
         pass
 
-    def all(self):
+    def all(self, cls=None):
         """
         This function returns all objects in form of a disctionary
         """
-        return self.__objects
+        if cls is None:
+            return self.__objects
+        else:
+            return {k: v for k, v in self.__objects.items() if isinstance(v, cls)}
     
     def new(self,obj):
         """

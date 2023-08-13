@@ -3,7 +3,7 @@
 import cmd
 import ast
 from datetime import datetime as dt
-from models.__init__ import storage
+from models import storage
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -12,13 +12,16 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
-classes = {"BaseModel": BaseModel,
+classes = {
+        "BaseModel": BaseModel,
         "Amenity": Amenity,
         "City": City,
         "Place": Place,
         "Review": Review,
         "State": State,
-        "User": User}
+        "User": User
+        }
+
 
 
 class HBNBCommand(cmd.Cmd):
@@ -93,17 +96,16 @@ class HBNBCommand(cmd.Cmd):
         """ All string representations of instances is printed """
         args = arg.split()
         objt = storage.all()
-        if args and args[0] not in classes.keys():
-            print("** class doesn't exist **")
-        else:
-            result = []
-            for key in objt.keys():
-                if args:
-                    if args[0] == key.split(".")[0]:
-                        result.append(str(objt[key]))
-                else:
-                    result.append(str(objt[key]))
+        
+        if not args:
+            result = [str(obj) for obj in objt.values()]
             print(result)
+        elif args[0] in classes.keys():
+            cls_name = args[0]
+            result = [str(obj) for key, obj in objt.items() if key.startswith(cls_name + ".")]
+            print(result)
+        else:
+            print("** class doesn't exist **")
 
 
     def do_update(self, arg):
@@ -153,16 +155,11 @@ class HBNBCommand(cmd.Cmd):
     def default(self, line):
         """ Handles new ways of inputing data """
         args = line.split('.')
-        if len(args) > 1 and args[0] in globals() and args[1] == "show":
+        if len(args) == 2 and args[0] in classes and args[1] == "all()":
             cls_name = args[0]
-            if len(args) < 3:
-                print("** instance id missing **")
-                return
-            key = "{}.{}".format(cls_name, args[2])
-            if key in storage.all():
-                print(storage.all[key])
-            else:
-                print("** no instance found **")
+            all_instances = storage.all()
+            result = [str(obj) for obj in all_instances.values()]
+            print(result)
         else:
             print("*** Unknown syntax: {}".format(line))
 

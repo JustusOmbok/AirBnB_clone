@@ -14,10 +14,3 @@ class User(BaseModel):
     first_name = ''
     last_name = ''
 
-    def count(cls):
-        """ Returns number of instances """
-        return len(models.storage.all(cls))
-
-    def all(cls):
-        """ Returns a dictionary of all instances """
-        return models.storage.all(cls) 

@@ -28,7 +28,7 @@ class FileStorage:
     This customer class for file storage
     """
 
-    __file_path = "./file.json"
+    __file_path = 'file.json'
     __objects = {}
 
     def __init__(self) -> None:
@@ -47,8 +47,8 @@ class FileStorage:
         """
         adds new object to the storage dictionary
         """
-        name = type(obj).__name__
-        type(self).__objects[name + "." + str(obj.id)] = obj
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        self.__objects[key] = obj
 
     def save(self):
         """

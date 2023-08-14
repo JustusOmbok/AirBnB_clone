@@ -42,24 +42,29 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, arg):
+        """ Creates a new instance, saves it """
+
         if not arg:
             print("** class name missing **")
             return
 
-        if arg not in classes:
+        class_name = arg
+        if class_name not in classes:
             print("** class doesn't exist **")
             return
 
-        obj = classes[arg]()
+        obj = classes[class_name]()
         obj.save()
         print(obj.id)
 
     def do_show(self, arg):
-        args = arg.split()
-        if not args:
+        """ Prints string representation """
+
+        if not arg:
             print("** class name missing **")
             return
 
+        args = arg.split()
         class_name = args[0]
         if class_name not in classes:
             print("** class doesn't exist **")
@@ -119,7 +124,8 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        if args[0] not in globals():
+
+        if args[0] not in classes:
             print("** class doesn't exist **")
             return
         if len(args) < 2:
@@ -166,7 +172,7 @@ class HBNBCommand(cmd.Cmd):
             result = [str(obj) for obj in all_instances.values()]
             print(result)
         else:
-            print("*** Unknown syntax: {}".format(line))
+            print("*** Unknown syntax:", line)
 
 
 if __name__ == '__main__':

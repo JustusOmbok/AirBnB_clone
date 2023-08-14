@@ -1,12 +1,33 @@
 #!/usr/bin/python3
+""""
+This our storage module. will convert files to JSON
+"""
 import json
 import os
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+
+classes = {
+        "BaseModel": BaseModel,
+        "Amenity": Amenity,
+        "City": City,
+        "Place": Place,
+        "Review": Review,
+        "State": State,
+        "User": User
+        }
 
 """" This our storage module. will convert files to JSON"""
 class FileStorage:
     """
     This customer class for file storage
     """
+
     __file_path = "./file.json"
     __objects = {}
 

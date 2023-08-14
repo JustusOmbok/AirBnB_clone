@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 from datetime import datetime
 import uuid
-from models import storage
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
@@ -37,6 +36,7 @@ class BaseModel:
         """
         Updates the updated_at attribute and saves the instance.
         """
+        from models import storage
         self.updated_at = datetime.now()
         dic = self.to_dict()
         storage.save()
